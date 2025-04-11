@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseSplitterApp.Views.CreatePersonPage"
+             Title="Create Person"
+             xmlns:vm="clr-namespace:ExpenseSplitterApp.ViewModels"
+             xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
+             x:DataType="vm:MainPageViewModel"
+             BackgroundColor="#F5F5F5">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Persons List -->
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="20">
+                <Label Text="Persons"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="#333"
+                       HorizontalOptions="Center" />
+
+                <CollectionView ItemsSource="{Binding Persons}"
+                                EmptyView="No persons to display">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                           ItemSpacing="2"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:PersonModel" >
+                            <Frame CornerRadius="12"
+                                   Padding="15"
+                                   Margin="5,5"
+                                   BackgroundColor="White"
+                                   HasShadow="True">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Person Name -->
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           FontSize="16"
+                                           TextColor="#333"
+                                           VerticalTextAlignment="Center" />
+
+                                    <!-- Edit Button -->
+                                    <Button Grid.Column="1"
+                                            Text="Edit"
+                                            FontSize="14"
+                                            BackgroundColor="#2E8B57"
+                                            TextColor="White"
+                                            WidthRequest="60"
+                                            HeightRequest="30"
+                                            CornerRadius="5"
+                                            Padding ="5"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                                                    />
+
+                                    <!-- Delete Button -->
+                                    <Button Grid.Column="2"
+                                            Text="Delete"
+                                            FontSize="14"
+                                            BackgroundColor="#FF6347"
+                                            TextColor="White"
+                                            WidthRequest="60"
+                                            HeightRequest="30"
+                                            CornerRadius="5"
+                                            Padding ="5"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                                                    />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Floating Action Button -->
+        <Grid Grid.Row="1">
+            <Button Text="+"
+                    
+                    FontSize="28"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    BackgroundColor="#2E8B57"
+                    TextColor="White"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="0,0,10,10" />
+        </Grid>
+    </Grid>
+</ContentPage>
