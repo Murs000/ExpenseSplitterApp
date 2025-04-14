@@ -1,4 +1,5 @@
 ﻿using ExpenseSplitterApp.ViewModels;
+using ExpenseSplitterApp.Views;
 using Microsoft.Extensions.Logging;
 
 namespace ExpenseSplitterApp
@@ -18,6 +19,7 @@ namespace ExpenseSplitterApp
 
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<CreatePersonPage>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
