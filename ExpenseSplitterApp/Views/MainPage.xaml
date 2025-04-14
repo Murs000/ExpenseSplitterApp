@@ -4,13 +4,24 @@
              xmlns:vm="clr-namespace:ExpenseSplitterApp.ViewModels"
              xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
              x:Class="ExpenseSplitterApp.MainPage"
+             xmlns:hlp="clr-namespace:ExpenseSplitterApp.Helpers"
              x:DataType="vm:MainPageViewModel"
              BackgroundColor="#F5F5F5">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <hlp:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="➕" 
+                     Clicked="OnGoToSecondPageClicked"/>
+    </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Expenses List -->
@@ -72,8 +83,8 @@
 
         <!-- Floating Action Button -->
         <Grid Grid.Row="1">
-            <Button Text="+"
-                    Clicked="OnGoToSecondPageClicked"
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Button Text="="
                     FontSize="28"
                     WidthRequest="60"
                     HeightRequest="60"
@@ -82,7 +93,46 @@
                     TextColor="White"
                     HorizontalOptions="End"
                     VerticalOptions="End"
-                    Margin="0,0,10,10"/>
+                    Margin="0,0,10,10" 
+                    Command="{Binding Calculate}"/>
+            </HorizontalStackLayout>
         </Grid>
+        
+        <CollectionView Grid.Row="2"
+                ItemsSource="{Binding Result}"
+                IsVisible="{Binding IsResultVisible}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal"
+                           ItemSpacing="2"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Loan">
+                    <Frame Padding="15" Margin="5,5" BackgroundColor="White" HasShadow="True">
+                        <Frame.Triggers>
+                            <!-- Trigger for IsRecive property to change BackgroundColor -->
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="True">
+                                <Setter Property="BorderColor" Value="Green"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="False">
+                                <Setter Property="BorderColor" Value="Red"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Display Loan details -->
+                            <Label Grid.Column="0" Text="{Binding PersonId}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>
