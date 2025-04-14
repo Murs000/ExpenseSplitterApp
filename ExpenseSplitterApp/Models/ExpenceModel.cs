@@ -11,6 +11,7 @@ namespace ExpenseSplitterApp.Models
         public int Id { get; set; }
         public double ExpenceAmount { get; set; }
         public string Description { get; set; } = string.Empty;
+        public PersonModel? Person { get; set; }
         public int PersonId { get; set; }
     }
 }
