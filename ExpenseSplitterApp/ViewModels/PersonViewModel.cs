@@ -44,6 +44,8 @@ namespace ExpenseSplitterApp.ViewModels
         public ICommand ShowAddEntryCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand CancelCommand { get; }
+
 
         public PersonViewModel(IUnitOfWork unitOfWork)
         {
@@ -52,6 +54,7 @@ namespace ExpenseSplitterApp.ViewModels
             ActionCommand = new Command(async () => await OnActionAsync());
             ShowAddEntryCommand = new Command(() => ShowAddEntry());
             EditCommand = new Command<PersonModel>(OnEdit);
+            CancelCommand = new Command(OnCancel);
             DeleteCommand = new Command<PersonModel>(async (person) => await OnDeleteAsync(person));
 
             _ = LoadPeopleAsync();
@@ -87,11 +90,14 @@ namespace ExpenseSplitterApp.ViewModels
 
             if (SelectedPerson.Id == 0)
             {
-                await _unitOfWork.People.AddAsync(SelectedPerson);
+                var newPerson = new PersonModel { Name = SelectedPerson.Name };
+                await _unitOfWork.People.AddAsync(newPerson);
             }
             else
             {
-                _unitOfWork.People.Update(SelectedPerson);
+                var trackedPerson = await _unitOfWork.People.GetByIdAsync(SelectedPerson.Id);
+                trackedPerson.Name = SelectedPerson.Name;
+                _unitOfWork.People.Update(trackedPerson);
             }
 
             await _unitOfWork.SaveAsync();
@@ -105,12 +111,21 @@ namespace ExpenseSplitterApp.ViewModels
 
         private async Task OnDeleteAsync(PersonModel person)
         {
+            var trackedPerson = await _unitOfWork.People.GetByIdAsync(person.Id);
             var confirm = await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure to delete {person.Name}?", "Yes", "No");
             if (!confirm) return;
 
-            _unitOfWork.People.Remove(person);
+
+            _unitOfWork.People.Remove(trackedPerson);
             await _unitOfWork.SaveAsync();
             People.Remove(person);
+        }
+
+        private void OnCancel()
+        {
+            SelectedPerson = new PersonModel(); // Clear entry
+            IsEditVisible = false;
+            IsPlusVisible = true;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         
         <!-- Persons List -->
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout Spacing="20">
                 <CollectionView ItemsSource="{Binding People}" SelectionMode="None">
                     <CollectionView.ItemsLayout>
@@ -28,15 +28,24 @@
                             <SwipeView>
                                 <SwipeView.RightItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Edit"
-                                                   BackgroundColor="DodgerBlue"
-                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
-                                                   CommandParameter="{Binding .}" />
-
-                                        <SwipeItem Text="Delete"
+                                        <SwipeItemView>
+                                            <Border StrokeShape="RoundRectangle 0,12,0,12">
+                                                <Button Text="Delete"
                                                    BackgroundColor="Crimson"
                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
-                                                   CommandParameter="{Binding .}" />
+                                                   CommandParameter="{Binding .}"
+                                                        CornerRadius="0"/>
+                                            </Border>
+                                        </SwipeItemView>
+                                        <SwipeItemView>
+                                            <Border>
+                                                <Button Text="Edit"
+                                                        BackgroundColor="DodgerBlue"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        CornerRadius="0"/>
+                                            </Border>
+                                        </SwipeItemView>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
 
@@ -64,11 +73,28 @@
                    FontSize="16"
                    BackgroundColor="White"
                    TextColor="#333" />
-            <Button Text="{Binding ActionButtonText}"
-                    Command="{Binding ActionCommand}"
-                    BackgroundColor="#4682B4"
-                    TextColor="White"
-                    Margin="0,5" />
+            <Grid BackgroundColor="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0"
+                        Margin="2"
+                    Text="{Binding ActionButtonText}"
+                Command="{Binding ActionCommand}"
+                BackgroundColor="#4682B4"
+                TextColor="White"
+                HorizontalOptions="FillAndExpand" />
+
+                <Button Grid.Column="1"
+                        Margin="2"
+                    Text="Cancel"
+                Command="{Binding CancelCommand}"
+                BackgroundColor="LightGray"
+                TextColor="Black"
+                HorizontalOptions="FillAndExpand" />
+            </Grid>
         </StackLayout>
 
         <!-- Floating + Button -->
