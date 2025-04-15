@@ -14,7 +14,7 @@ namespace ExpenseSplitterApp
         }
         private async void OnGoToSecondPageClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(Views.CreatePersonPage));
+            await Shell.Current.GoToAsync(nameof(Views.PersonPage));
         }
     }
 }

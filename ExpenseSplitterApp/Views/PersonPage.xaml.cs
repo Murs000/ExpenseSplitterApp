@@ -2,9 +2,9 @@ using ExpenseSplitterApp.ViewModels;
 
 namespace ExpenseSplitterApp.Views;
 
-public partial class CreatePersonPage : ContentPage
+public partial class PersonPage : ContentPage
 {
-	public CreatePersonPage(MainPageViewModel viewModel)
+	public PersonPage(PersonViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;

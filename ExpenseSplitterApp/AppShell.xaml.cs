@@ -7,7 +7,7 @@ namespace ExpenseSplitterApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(CreatePersonPage), typeof(CreatePersonPage));
+            Routing.RegisterRoute(nameof(PersonPage), typeof(PersonPage));
         }
     }
 }

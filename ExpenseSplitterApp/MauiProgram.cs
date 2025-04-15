@@ -29,13 +29,22 @@ namespace ExpenseSplitterApp
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddSingleton<MainPageViewModel>();
+            builder.Services.AddSingleton<PersonViewModel>();
+
             builder.Services.AddSingleton<MainPage>();
-            builder.Services.AddSingleton<CreatePersonPage>();
+            builder.Services.AddSingleton<PersonPage>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.EnsureCreated();
+
+            return app;
         }
     }
 }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseSplitterApp.ViewModels"
+             xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
+             x:Class="ExpenseSplitterApp.Views.PersonPage"
+             x:DataType="vm:PersonViewModel"
+             Title="Persons">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <!-- Main content -->
+            <RowDefinition Height="Auto" />
+            <!-- Add/Edit area -->
+        </Grid.RowDefinitions>
+        
+        <!-- Persons List -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="20">
+                <CollectionView ItemsSource="{Binding People}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                            ItemSpacing="2" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:PersonModel">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Edit"
+                                                   BackgroundColor="DodgerBlue"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
+                                                   CommandParameter="{Binding .}" />
+
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="Crimson"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Stroke="#DDD"
+                                        StrokeThickness="1"
+                                        BackgroundColor="White"
+                                        StrokeShape="RoundRectangle 12,0,12,0"
+                                        Margin="10"
+                                        Padding="15">
+                                    <Label Text="{Binding Name}" FontSize="16" TextColor="#333" />
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Entry & Buttons -->
+        <StackLayout Grid.Row="1" Padding="0,10,0,0"
+                     IsVisible="{Binding IsEditVisible}"
+                     BackgroundColor="#f0f0f0">
+            <Entry Placeholder="Enter name..."
+                   Text="{Binding SelectedPerson.Name}"
+                   FontSize="16"
+                   BackgroundColor="White"
+                   TextColor="#333" />
+            <Button Text="{Binding ActionButtonText}"
+                    Command="{Binding ActionCommand}"
+                    BackgroundColor="#4682B4"
+                    TextColor="White"
+                    Margin="0,5" />
+        </StackLayout>
+
+        <!-- Floating + Button -->
+        <Button Text="+"
+                FontSize="24"
+                CornerRadius="30"
+                BackgroundColor="#4682B4"
+                TextColor="White"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,10,10"
+                Command="{Binding ShowAddEntryCommand}"
+                IsVisible="{Binding IsPlusVisible}"
+                Grid.Row="0" />
+    </Grid>
+</ContentPage>
