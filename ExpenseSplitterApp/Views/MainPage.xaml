@@ -14,8 +14,12 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="➕" 
-                     Clicked="OnGoToSecondPageClicked"/>
+        <ToolbarItem Text="➗ Calculate Expences"
+                     Command="{Binding Calculate}"
+                     Order="Secondary"/>
+        <ToolbarItem Text="➕ Add Person" 
+                     Clicked="OnGoToSecondPageClicked"
+                     Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
