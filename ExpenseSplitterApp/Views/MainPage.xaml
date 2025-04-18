@@ -16,10 +16,10 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="➗ Calculate Expences"
                      Command="{Binding Calculate}"
-                     Order="Secondary"/>
+                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"/>
         <ToolbarItem Text="➕ Add Person" 
                      Clicked="OnGoToSecondPageClicked"
-                     Order="Secondary"/>
+                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"/>
     </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -101,42 +101,48 @@
                     Command="{Binding Calculate}"/>
             </HorizontalStackLayout>
         </Grid>
-        
-        <CollectionView Grid.Row="2"
-                ItemsSource="{Binding Result}"
-                IsVisible="{Binding IsResultVisible}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Horizontal"
-                           ItemSpacing="2"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:Loan">
-                    <Frame Padding="15" Margin="5,5" BackgroundColor="White" HasShadow="True">
-                        <Frame.Triggers>
-                            <!-- Trigger for IsRecive property to change BackgroundColor -->
-                            <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="True">
-                                <Setter Property="BorderColor" Value="Green"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="False">
-                                <Setter Property="BorderColor" Value="Red"/>
-                            </DataTrigger>
-                        </Frame.Triggers>
 
-                        <Grid ColumnSpacing="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="2"
+              IsVisible="{Binding IsResultVisible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <CollectionView ItemsSource="{Binding Result}" Grid.Column="0">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"
+                   ItemSpacing="2"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Loan">
+                        <Frame Padding="15" Margin="5,5" BackgroundColor="White" HasShadow="True">
+                            <Frame.Triggers>
+                                <!-- Trigger for IsRecive property to change BackgroundColor -->
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="True">
+                                    <Setter Property="BorderColor" Value="Green"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="False">
+                                    <Setter Property="BorderColor" Value="Red"/>
+                                </DataTrigger>
+                            </Frame.Triggers>
 
-                            <!-- Display Loan details -->
-                            <Label Grid.Column="0" Text="{Binding PersonId}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
-                            <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
-                            <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Display Loan details -->
+                                <Label Grid.Column="0" Text="{Binding PersonId}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Grid.Column="1" Background="LightGray" HorizontalOptions="End" Text="Cancel" TextColor="Black" Margin="4" Command="{Binding CancelCommand}"/>
+        </Grid>
     </Grid>
 </ContentPage>

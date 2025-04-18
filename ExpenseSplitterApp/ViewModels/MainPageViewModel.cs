@@ -40,9 +40,12 @@ namespace ExpenseSplitterApp.ViewModels
         }
 
         public ICommand Calculate => new SplitCalculatorCommand(this,Persons.ToList(),Expences.ToList());
+        public ICommand CancelCommand { get; }
 
         public MainPageViewModel() 
         {
+            CancelCommand = new Command(OnCancel);
+
             Persons = new ObservableCollection<PersonModel>
             {
                 new PersonModel { Id = 1, Name ="1"},
@@ -57,6 +60,11 @@ namespace ExpenseSplitterApp.ViewModels
                 new ExpenceModel { Id = 1, Description = "Food", ExpenceAmount = 13.30, PersonId = 1 },
                 new ExpenceModel { Id = 1, Description = "Food", ExpenceAmount = 14.99, PersonId = 2 }
             };
+        }
+
+        private void OnCancel()
+        {
+            IsResultVisible = false;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
