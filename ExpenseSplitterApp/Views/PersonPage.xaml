@@ -56,7 +56,33 @@
                                         StrokeShape="RoundRectangle 12,0,12,0"
                                         Margin="10"
                                         Padding="15">
-                                    <Label Text="{Binding Name}" FontSize="16" TextColor="#333" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding Name}" FontSize="16" TextColor="#333" />
+                                        <Button Text="Edit" 
+                                                HorizontalOptions="End"
+                                                Grid.Column="1"
+                                                IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="DodgerBlue"
+                                                TextColor="White"
+                                                WidthRequest="80"/>
+                                        <Button Text="Delete"
+                                                HorizontalOptions="End"
+                                                Grid.Column="2"
+                                                IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Crimson"
+                                                TextColor="White"
+                                                WidthRequest="80"
+                                                Margin="10,0,0,0" />
+                                    </Grid>
                                 </Border>
                             </SwipeView>
                         </DataTemplate>
