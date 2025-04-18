@@ -6,12 +6,25 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <!-- Primary Theme -->
+    <Color x:Key="Primary">#4682B4</Color>
+    <!-- Your main color -->
+    <Color x:Key="PrimaryDark">#315f7c</Color>
+    <!-- A darker shade -->
+    <Color x:Key="PrimaryDarkText">#1f2b38</Color>
+    <!-- Text on primary -->
+
+    <!-- Secondary Theme -->
+    <Color x:Key="Secondary">#B0C4DE</Color>
+    <!-- Light Steel Blue -->
+    <Color x:Key="SecondaryDarkText">#3c4f61</Color>
+    <!-- Text on secondary -->
+
+    <!-- Tertiary Theme -->
+    <Color x:Key="Tertiary">#5F9EA0</Color>
+    <!-- Cadet Blue for accents -->
+    <Color x:Key="TertiaryDark">#497d7e</Color>
+    <!-- Darker tertiary shade -->
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
@@ -31,6 +44,7 @@
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
+
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
 

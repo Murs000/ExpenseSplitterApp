@@ -89,7 +89,7 @@
                     WidthRequest="60"
                     HeightRequest="60"
                     CornerRadius="30"
-                    BackgroundColor="#2E8B57"
+                    BackgroundColor="#4682B4"
                     TextColor="White"
                     HorizontalOptions="End"
                     VerticalOptions="End"

@@ -5,7 +5,8 @@
              xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
              x:Class="ExpenseSplitterApp.Views.PersonPage"
              x:DataType="vm:PersonViewModel"
-             Title="Persons">
+             Title="Persons"
+             BackgroundColor="#F5F5F5">
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -66,8 +67,7 @@
 
         <!-- Bottom Entry & Buttons -->
         <StackLayout Grid.Row="1" Padding="0,10,0,0"
-                     IsVisible="{Binding IsEditVisible}"
-                     BackgroundColor="#f0f0f0">
+                     IsVisible="{Binding IsEditVisible}">
             <Entry Placeholder="Enter name..."
                    Text="{Binding SelectedPerson.Name}"
                    FontSize="16"

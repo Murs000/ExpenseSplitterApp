@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#512BD4</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
+	<!-- Primary color (Steel Blue) -->
+	<color name="colorPrimary">#4682B4</color>
+
+	<!-- Darker variant of the primary color -->
+	<color name="colorPrimaryDark">#315f7c</color>
+
+	<!-- Accent color (harmonious with the primary) -->
+	<color name="colorAccent">#5F9EA0</color>
 </resources>
