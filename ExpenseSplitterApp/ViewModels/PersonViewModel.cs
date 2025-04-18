@@ -24,6 +24,7 @@ namespace ExpenseSplitterApp.ViewModels
             }
         }
 
+        #region Bindable Properties
         private bool _isEditVisible;
         public bool IsEditVisible
         {
@@ -40,12 +41,14 @@ namespace ExpenseSplitterApp.ViewModels
 
         public string ActionButtonText => SelectedPerson?.Id == 0 ? "Add" : "Update";
 
+        #endregion
+        #region Commands
         public ICommand ActionCommand { get; }
         public ICommand ShowAddEntryCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
-
+        #endregion
 
         public PersonViewModel(IUnitOfWork unitOfWork)
         {
@@ -59,7 +62,14 @@ namespace ExpenseSplitterApp.ViewModels
 
             _ = LoadPeopleAsync();
         }
-
+        #region Private Methods
+        private void OnCalculate()
+        {
+            SelectedPerson = new PersonModel();
+            IsEditVisible = true;
+            IsPlusVisible = false;
+            OnPropertyChanged(nameof(ActionButtonText));
+        }
         private async Task LoadPeopleAsync()
         {
             var people = await _unitOfWork.People.GetAllAsync();
@@ -127,7 +137,8 @@ namespace ExpenseSplitterApp.ViewModels
             IsEditVisible = false;
             IsPlusVisible = true;
         }
-
+        #endregion
+        
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

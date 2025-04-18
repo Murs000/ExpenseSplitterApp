@@ -8,7 +8,7 @@ namespace ExpenseSplitterApp.Models
 {
     public class Loan
     {
-        public int PersonId { get; set; }
+        public string PersonName { get; set; } = string.Empty;
         public bool IsRecive { get; set; }
         public double MoneyAmount { get; set; }
     }

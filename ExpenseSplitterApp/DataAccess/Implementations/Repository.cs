@@ -19,7 +19,18 @@ namespace ExpenseSplitterApp.DataAccess.Implementations
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.AsNoTracking().ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsync(params string[]? includes)
+        {
+            IQueryable<T> query = _dbSet;
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+            return await query.AsNoTracking().ToListAsync();
+        }
 
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 

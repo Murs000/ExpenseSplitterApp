@@ -15,7 +15,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="➗ Calculate Expences"
-                     Command="{Binding Calculate}"
+                     Command="{Binding CalculateCommand}"
                      Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"/>
         <ToolbarItem Text="➕ Add Person" 
                      Clicked="OnGoToSecondPageClicked"
@@ -23,7 +23,6 @@
     </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -72,7 +71,7 @@
                                            Margin="10,0" />
 
                                     <Label Grid.Column="2"
-                                           Text="{Binding PersonId}"
+                                           Text="{Binding Person.Name}"
                                            FontSize="14"
                                            TextColor="#777"
                                            VerticalTextAlignment="Center"
@@ -88,21 +87,57 @@
         <!-- Floating Action Button -->
         <Grid Grid.Row="1">
             <HorizontalStackLayout HorizontalOptions="End">
-                <Button Text="="
-                    FontSize="28"
-                    WidthRequest="60"
-                    HeightRequest="60"
-                    CornerRadius="30"
-                    BackgroundColor="#4682B4"
-                    TextColor="White"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="0,0,10,10" 
-                    Command="{Binding Calculate}"/>
+                <Button Text="+"
+                        IsVisible="{Binding IsPlusVisible}"
+                        FontSize="28"
+                        WidthRequest="60"
+                        HeightRequest="60"
+                        CornerRadius="30"
+                        BackgroundColor="#4682B4"
+                        TextColor="White"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        Margin="0,0,10,10" 
+                        Command="{Binding ShowEntryCommand}"/>
             </HorizontalStackLayout>
         </Grid>
 
-        <Grid Grid.Row="2"
+        <!-- Expense Entry -->
+        <VerticalStackLayout Spacing="10" Grid.Row="1" IsVisible="{Binding IsEntryVisible}">
+            <Label Text="Add Expense" FontAttributes="Bold" FontSize="18"/>
+            <Entry Placeholder="Description" Text="{Binding SelectedExpence.Description}" />
+            <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding SelectedExpence.ExpenceAmount}" />
+            <Picker Title="Select Person" 
+                    ItemsSource="{Binding People}" 
+                    ItemDisplayBinding="{Binding Name}" 
+                    SelectedItem="{Binding SelectedExpence.Person}"/>
+
+            <Grid BackgroundColor="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Margin="2"
+                        Text="{Binding ActionButtonText}"
+                        Command="{Binding ActionCommand}"
+                        BackgroundColor="#4682B4"
+                        TextColor="White"
+                        HorizontalOptions="FillAndExpand" />
+
+                <Button Grid.Column="1"
+                        Margin="2"
+                        Text="Cancel"
+                        Command="{Binding ActionCancelCommand}"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"
+                        HorizontalOptions="FillAndExpand" />
+            </Grid>
+        </VerticalStackLayout>
+        
+        <!-- Result View -->
+        <Grid Grid.Row="1"
               IsVisible="{Binding IsResultVisible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -134,7 +169,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Display Loan details -->
-                                <Label Grid.Column="0" Text="{Binding PersonId}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="0" Text="{Binding PersonName}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
                                 <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
                                 <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
                             </Grid>
@@ -142,7 +177,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Grid.Column="1" Background="LightGray" HorizontalOptions="End" Text="Cancel" TextColor="Black" Margin="4" Command="{Binding CancelCommand}"/>
+            <Button Grid.Column="1" Background="LightGray" HorizontalOptions="End" Text="Cancel" TextColor="Black" Margin="4" Command="{Binding ResultCancelCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>
