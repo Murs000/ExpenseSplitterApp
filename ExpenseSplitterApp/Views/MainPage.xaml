@@ -16,10 +16,18 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="➗ Calculate Expences"
                      Command="{Binding CalculateCommand}"
-                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"/>
+                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"
+                     IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}"/>
         <ToolbarItem Text="➕ Add Person" 
                      Clicked="OnGoToSecondPageClicked"
-                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"/>
+                     Order="{x:OnPlatform WinUI=Primary, Default=Secondary}"
+                     IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}"/>
     </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -28,22 +36,21 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Text="Expenses"
-       FontSize="24"
-       FontAttributes="Bold"
-       HorizontalOptions="Center"
-               Grid.Column="0"
-               Margin="0,0,0,10"/>
+        <Label  Text="Expenses"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Grid.Column="0"
+                Margin="0,0,0,10"/>
+        
         <!-- Expenses List -->
         <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout Spacing="20">
-                
-
                 <CollectionView ItemsSource="{Binding Expences}"
                                 EmptyView="No expenses added yet">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical"
-                           ItemSpacing="2" />
+                        <LinearItemsLayout  Orientation="Vertical"
+                                            ItemSpacing="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:ExpenceModel">
@@ -72,75 +79,71 @@
                                         </SwipeItemView>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
-                                <Border
-        StrokeThickness="1"
-        Margin="2">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle>
-                                            <RoundRectangle.CornerRadius>
-                                                <OnPlatform x:TypeArguments="CornerRadius">
-                                                    <On Platform="WinUI" Value="12"/>
-                                                    <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
-                                                </OnPlatform>
-                                            </RoundRectangle.CornerRadius>
-                                        </RoundRectangle>
-                                    </Border.StrokeShape>
-                                    <Grid>
+                            <Border StrokeThickness="1"
+                                    Margin="2">
+                                <Border.StrokeShape>
+                                    <RoundRectangle>
+                                        <RoundRectangle.CornerRadius>
+                                            <OnPlatform x:TypeArguments="CornerRadius">
+                                                <On Platform="WinUI" Value="12"/>
+                                                <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
+                                            </OnPlatform>
+                                        </RoundRectangle.CornerRadius>
+                                    </RoundRectangle>
+                                </Border.StrokeShape>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Grid.Column="0"
+                                            Text="{Binding Description}"
+                                            FontSize="16"
+                                            VerticalTextAlignment="Center" 
+                                            Margin="10"/>
+                                    <Label  Grid.Column="1"
+                                            Text="{Binding ExpenceAmount, StringFormat='₼{0:F2}'}"
+                                            FontSize="16"
+                                            TextColor="#2E8B57"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalOptions="End"
+                                            Margin="10,0" />
+                                    <Label  Grid.Column="2"
+                                            Text="{Binding Person.Name}"
+                                            FontSize="14"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalOptions="End"
+                                            Margin="0,0,20,0"/>
+                                    <Grid   Grid.Column="3"
+                                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                            Path=State, 
+                                            Converter={StaticResource EnumToBoolConverter}, 
+                                            ConverterParameter=Observe}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-
-                                        <Label Grid.Column="0"
-               Text="{Binding Description}"
-               FontSize="16"
-               VerticalTextAlignment="Center" 
-                                               Margin="10"/>
-
-                                        <Label Grid.Column="1"
-               Text="{Binding ExpenceAmount, StringFormat='₼{0:F2}'}"
-               FontSize="16"
-               TextColor="#2E8B57"
-               VerticalTextAlignment="Center"
-               HorizontalOptions="End"
-               Margin="10,0" />
-
-                                        <Label Grid.Column="2"
-               Text="{Binding Person.Name}"
-               FontSize="14"
-               VerticalTextAlignment="Center"
-               HorizontalOptions="End"
-                                               Margin="0,0,20,0"/>
-                                        <Grid Grid.Column="3"
-                                              IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
-                                                                Path=State, 
-                                                                Converter={StaticResource EnumToBoolConverter}, 
-                                                                ConverterParameter=Observe}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Button Text="Edit"
-CornerRadius="0"
-Grid.Column="0"
-IsVisible="{x:OnPlatform WinUI=True, Default=False}"
-Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
-CommandParameter="{Binding .}"
-WidthRequest="80"/>
-                                            <Button Text="Delete"
-CornerRadius="0"
-Grid.Column="1"
-IsVisible="{x:OnPlatform WinUI=True, Default=False}"
-Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
-CommandParameter="{Binding .}"
-BackgroundColor="Crimson"
-WidthRequest="80"
-Margin="1,0,0,0"/>
+                                        <Button Text="Edit"
+                                                CornerRadius="0"
+                                                Grid.Column="0"
+                                                IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                Path=EditCommand}"
+                                                CommandParameter="{Binding .}"
+                                                WidthRequest="80"/>
+                                        <Button Text="Delete"
+                                                CornerRadius="0"
+                                                Grid.Column="1"
+                                                IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Crimson"
+                                                WidthRequest="80"
+                                                Margin="1,0,0,0"/>
                                         </Grid>
-                                        
                                     </Grid>
                                 </Border>
                             </SwipeView>
@@ -170,10 +173,12 @@ Margin="1,0,0,0"/>
         </Grid>
 
         <!-- Expense Entry -->
-        <VerticalStackLayout Spacing="10" Grid.Row="2" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
-                  Path=State, 
-                  Converter={StaticResource EnumToBoolConverter}, 
-                  ConverterParameter=Action}">
+        <VerticalStackLayout    Spacing="10" 
+                                Grid.Row="2" 
+                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                Path=State, 
+                                Converter={StaticResource EnumToBoolConverter}, 
+                                ConverterParameter=Action}">
             <Label Text="Add Expense" FontAttributes="Bold" FontSize="18"/>
             <Entry Placeholder="Description" Text="{Binding SelectedExpence.Description}" />
             <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding SelectedExpence.ExpenceAmount}" />
@@ -181,13 +186,11 @@ Margin="1,0,0,0"/>
                     ItemsSource="{Binding People}" 
                     ItemDisplayBinding="{Binding Name}" 
                     SelectedItem="{Binding SelectedExpence.Person}"/>
-
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-
                 <Button Grid.Column="0"
                         Margin="2"
                         Text="{Binding ActionButtonText}"
