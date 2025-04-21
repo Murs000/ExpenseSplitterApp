@@ -37,11 +37,12 @@ namespace ExpenseSplitterApp.Services
         public async Task UpdateAsync(ExpenceModel expence)
         {
             var trackedExpence = await _unitOfWork.Expenses.GetByIdAsync(expence.Id);
+            var newPerson = await _unitOfWork.People.GetByIdAsync(expence.Person.Id);
 
             trackedExpence.Description = expence.Description;
             trackedExpence.ExpenceAmount = expence.ExpenceAmount;
-            trackedExpence.PersonId = expence.PersonId;
-            trackedExpence.Person = new PersonModel();
+            trackedExpence.PersonId = expence.Person.Id;
+            trackedExpence.Person = newPerson;
 
             _unitOfWork.Expenses.Update(trackedExpence);
             await _unitOfWork.SaveAsync();
