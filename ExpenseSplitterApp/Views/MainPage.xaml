@@ -5,8 +5,7 @@
              xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
              x:Class="ExpenseSplitterApp.MainPage"
              xmlns:hlp="clr-namespace:ExpenseSplitterApp.Helpers"
-             x:DataType="vm:MainPageViewModel"
-             BackgroundColor="#F5F5F5">
+             x:DataType="vm:MainPageViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -32,7 +31,6 @@
         <Label Text="Expenses"
        FontSize="24"
        FontAttributes="Bold"
-       TextColor="#333"
        HorizontalOptions="Center"
                Grid.Column="0"
                Margin="0,0,0,10"/>
@@ -67,7 +65,6 @@
                                         <SwipeItemView>
                                             <Border>
                                                 <Button Text="Edit"
-                                                        BackgroundColor="#4682B4"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
                                                         CommandParameter="{Binding .}"
                                                         CornerRadius="0"/>
@@ -75,9 +72,8 @@
                                         </SwipeItemView>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
-                                <Border Stroke="#DDD"
+                                <Border
         StrokeThickness="1"
-        BackgroundColor="White"
         Margin="2">
                                     <Border.StrokeShape>
                                         <RoundRectangle>
@@ -101,7 +97,6 @@
                                         <Label Grid.Column="0"
                Text="{Binding Description}"
                FontSize="16"
-               TextColor="#333"
                VerticalTextAlignment="Center" 
                                                Margin="10"/>
 
@@ -116,7 +111,6 @@
                                         <Label Grid.Column="2"
                Text="{Binding Person.Name}"
                FontSize="14"
-               TextColor="#777"
                VerticalTextAlignment="Center"
                HorizontalOptions="End"
                                                Margin="0,0,20,0"/>
@@ -135,8 +129,6 @@ Grid.Column="0"
 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
 CommandParameter="{Binding .}"
-BackgroundColor="#4682B4"
-TextColor="White"
 WidthRequest="80"/>
                                             <Button Text="Delete"
 CornerRadius="0"
@@ -145,7 +137,6 @@ IsVisible="{x:OnPlatform WinUI=True, Default=False}"
 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
 CommandParameter="{Binding .}"
 BackgroundColor="Crimson"
-TextColor="White"
 WidthRequest="80"
 Margin="1,0,0,0"/>
                                         </Grid>
@@ -171,8 +162,6 @@ Margin="1,0,0,0"/>
                         WidthRequest="60"
                         HeightRequest="60"
                         CornerRadius="30"
-                        BackgroundColor="#4682B4"
-                        TextColor="White"
                         HorizontalOptions="End"
                         VerticalOptions="End"
                         Margin="0,0,10,10" 
@@ -193,7 +182,7 @@ Margin="1,0,0,0"/>
                     ItemDisplayBinding="{Binding Name}" 
                     SelectedItem="{Binding SelectedExpence.Person}"/>
 
-            <Grid BackgroundColor="White">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -203,8 +192,6 @@ Margin="1,0,0,0"/>
                         Margin="2"
                         Text="{Binding ActionButtonText}"
                         Command="{Binding ActionCommand}"
-                        BackgroundColor="#4682B4"
-                        TextColor="White"
                         HorizontalOptions="FillAndExpand" />
 
                 <Button Grid.Column="1"
@@ -234,7 +221,7 @@ Margin="1,0,0,0"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:Loan">
-                        <Frame Padding="15" Margin="5,5" BackgroundColor="White" HasShadow="True">
+                        <Frame Padding="15" Margin="5,5" HasShadow="True">
                             <Frame.Triggers>
                                 <!-- Trigger for IsRecive property to change BackgroundColor -->
                                 <DataTrigger TargetType="Frame" Binding="{Binding IsRecive}" Value="True">
@@ -253,9 +240,9 @@ Margin="1,0,0,0"/>
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Display Loan details -->
-                                <Label Grid.Column="0" Text="{Binding PersonName}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
-                                <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
-                                <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" TextColor="#333" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="0" Text="{Binding PersonName}" FontSize="16" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" VerticalTextAlignment="Center"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>
