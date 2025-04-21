@@ -22,7 +22,7 @@
                 <CollectionView ItemsSource="{Binding People}" SelectionMode="None">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical"
-                                            ItemSpacing="2" />
+                                            ItemSpacing="5"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:PersonModel">
@@ -53,18 +53,26 @@
                                 <Border Stroke="#DDD"
                                         StrokeThickness="1"
                                         BackgroundColor="White"
-                                        StrokeShape="RoundRectangle 12,0,12,0"
-                                        Margin="10"
-                                        Padding="15">
+                                        Margin="2">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle>
+                                            <RoundRectangle.CornerRadius>
+                                                <OnPlatform x:TypeArguments="CornerRadius">
+                                                    <On Platform="WinUI" Value="12"/>
+                                                    <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
+                                                </OnPlatform>
+                                            </RoundRectangle.CornerRadius>
+                                        </RoundRectangle>
+                                    </Border.StrokeShape>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding Name}" FontSize="16" TextColor="#333" />
-                                        <Button Text="Edit" 
-                                                HorizontalOptions="End"
+                                        <Label Grid.Column="0" Text="{Binding Name}" FontSize="16" TextColor="#333" Margin="10" />
+                                        <Button Text="Edit"
+                                                CornerRadius="0"
                                                 Grid.Column="1"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
@@ -73,7 +81,7 @@
                                                 TextColor="White"
                                                 WidthRequest="80"/>
                                         <Button Text="Delete"
-                                                HorizontalOptions="End"
+                                                CornerRadius="0"
                                                 Grid.Column="2"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
@@ -81,7 +89,7 @@
                                                 BackgroundColor="Crimson"
                                                 TextColor="White"
                                                 WidthRequest="80"
-                                                Margin="10,0,0,0" />
+                                                Margin="1,0,0,0"/>
                                     </Grid>
                                 </Border>
                             </SwipeView>
