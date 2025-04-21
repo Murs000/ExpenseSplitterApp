@@ -62,6 +62,8 @@ namespace ExpenseSplitterApp.ViewModels
         public ICommand ResultCancelCommand { get; }
         public ICommand ActionCancelCommand { get; }
         public ICommand ShowEntryCommand { get; }
+        public ICommand EditCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public MainPageViewModel(IUnitOfWork unitOfWork)
         {
@@ -73,6 +75,8 @@ namespace ExpenseSplitterApp.ViewModels
             ResultCancelCommand = new Command(OnResultCancel);
             ActionCancelCommand = new Command(OnActionCancel);
             ShowEntryCommand = new Command(OnShowEntry);
+            EditCommand = new Command<ExpenceModel>(OnEdit);
+            DeleteCommand = new Command<ExpenceModel>(async (expense) => await OnDeleteAsync(expense));
 
             _ = LoadExpencesAsync();
             _ = LoadPeopleAsync();
@@ -85,6 +89,22 @@ namespace ExpenseSplitterApp.ViewModels
             IsPlusVisible = false;
             IsResultVisible = true;
             IsEntryVisible = false;
+        }
+        private void OnEdit(ExpenceModel expence)
+        {
+            var matchedPerson = People.FirstOrDefault(p => p.Id == expence.PersonId);
+
+            SelectedExpence = new ExpenceModel 
+            { 
+                Id = expence.Id, 
+                Description = expence.Description, 
+                PersonId = expence.PersonId,
+                ExpenceAmount = expence.ExpenceAmount,
+                Person =  matchedPerson
+            };
+            IsEntryVisible = true;
+            IsPlusVisible = false;
+            OnPropertyChanged(nameof(ActionButtonText));
         }
         private void OnShowEntry()
         {
@@ -147,6 +167,17 @@ namespace ExpenseSplitterApp.ViewModels
             IsEntryVisible = false;
             IsPlusVisible = true;
             OnPropertyChanged(nameof(ActionButtonText));
+        }
+        private async Task OnDeleteAsync(ExpenceModel expence)
+        {
+            var trackedExpence = await _unitOfWork.Expenses.GetByIdAsync(expence.Id);
+            var confirm = await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure to delete {expence.Person.Name} => {expence.Description}?", "Yes", "No");
+            if (!confirm) return;
+
+
+            _unitOfWork.Expenses.Remove(trackedExpence);
+            await _unitOfWork.SaveAsync();
+            Expences.Remove(expence);
         }
 
         private void OnResultCancel()

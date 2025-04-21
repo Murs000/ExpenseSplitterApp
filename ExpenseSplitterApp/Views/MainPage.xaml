@@ -23,18 +23,22 @@
     </ContentPage.ToolbarItems>
     <Grid Padding="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Label Text="Expenses"
+       FontSize="24"
+       FontAttributes="Bold"
+       TextColor="#333"
+       HorizontalOptions="Center"
+               Grid.Column="0"
+               Margin="0,0,0,10"/>
         <!-- Expenses List -->
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout Spacing="20">
-                <Label Text="Expenses"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="#333"
-                       HorizontalOptions="Center"/>
+                
 
                 <CollectionView ItemsSource="{Binding Expences}"
                                 EmptyView="No expenses added yet">
@@ -44,40 +48,96 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:ExpenceModel">
-                            <Frame CornerRadius="12"
-                                   Padding="15"
-                                   Margin="5,5"
-                                   BackgroundColor="White"
-                                   HasShadow="True">
-                                <Grid ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItemView>
+                                            <Border StrokeShape="RoundRectangle 0,12,0,12">
+                                                <Button Text="Delete"
+                                                        BackgroundColor="Crimson"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        CornerRadius="0"/>
+                                            </Border>
+                                        </SwipeItemView>
+                                        <SwipeItemView>
+                                            <Border>
+                                                <Button Text="Edit"
+                                                        BackgroundColor="#4682B4"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        CornerRadius="0"/>
+                                            </Border>
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Border Stroke="#DDD"
+        StrokeThickness="1"
+        BackgroundColor="White"
+        Margin="2">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle>
+                                            <RoundRectangle.CornerRadius>
+                                                <OnPlatform x:TypeArguments="CornerRadius">
+                                                    <On Platform="WinUI" Value="12"/>
+                                                    <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
+                                                </OnPlatform>
+                                            </RoundRectangle.CornerRadius>
+                                        </RoundRectangle>
+                                    </Border.StrokeShape>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0"
-                                           Text="{Binding Description}"
-                                           FontSize="16"
-                                           TextColor="#333"
-                                           VerticalTextAlignment="Center" />
+                                        <Label Grid.Column="0"
+               Text="{Binding Description}"
+               FontSize="16"
+               TextColor="#333"
+               VerticalTextAlignment="Center" 
+                                               Margin="10"/>
 
-                                    <Label Grid.Column="1"
-                                           Text="{Binding ExpenceAmount, StringFormat='₼{0:F2}'}"
-                                           FontSize="16"
-                                           TextColor="#2E8B57"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalOptions="End"
-                                           Margin="10,0" />
+                                        <Label Grid.Column="1"
+               Text="{Binding ExpenceAmount, StringFormat='₼{0:F2}'}"
+               FontSize="16"
+               TextColor="#2E8B57"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="End"
+               Margin="10,0" />
 
-                                    <Label Grid.Column="2"
-                                           Text="{Binding Person.Name}"
-                                           FontSize="14"
-                                           TextColor="#777"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalOptions="End" />
-                                </Grid>
-                            </Frame>
+                                        <Label Grid.Column="2"
+               Text="{Binding Person.Name}"
+               FontSize="14"
+               TextColor="#777"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="End"
+                                               Margin="0,0,20,0"/>
+                                        <Button Text="Edit"
+        CornerRadius="0"
+        Grid.Column="3"
+        IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
+        CommandParameter="{Binding .}"
+        BackgroundColor="#4682B4"
+        TextColor="White"
+        WidthRequest="80"/>
+                                        <Button Text="Delete"
+        CornerRadius="0"
+        Grid.Column="4"
+        IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
+        CommandParameter="{Binding .}"
+        BackgroundColor="Crimson"
+        TextColor="White"
+        WidthRequest="80"
+        Margin="1,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -85,7 +145,7 @@
         </ScrollView>
 
         <!-- Floating Action Button -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <HorizontalStackLayout HorizontalOptions="End">
                 <Button Text="+"
                         IsVisible="{Binding IsPlusVisible}"
@@ -103,7 +163,7 @@
         </Grid>
 
         <!-- Expense Entry -->
-        <VerticalStackLayout Spacing="10" Grid.Row="1" IsVisible="{Binding IsEntryVisible}">
+        <VerticalStackLayout Spacing="10" Grid.Row="2" IsVisible="{Binding IsEntryVisible}">
             <Label Text="Add Expense" FontAttributes="Bold" FontSize="18"/>
             <Entry Placeholder="Description" Text="{Binding SelectedExpence.Description}" />
             <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding SelectedExpence.ExpenceAmount}" />
@@ -137,7 +197,7 @@
         </VerticalStackLayout>
         
         <!-- Result View -->
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="2"
               IsVisible="{Binding IsResultVisible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

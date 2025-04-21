@@ -63,13 +63,6 @@ namespace ExpenseSplitterApp.ViewModels
             _ = LoadPeopleAsync();
         }
         #region Private Methods
-        private void OnCalculate()
-        {
-            SelectedPerson = new PersonModel();
-            IsEditVisible = true;
-            IsPlusVisible = false;
-            OnPropertyChanged(nameof(ActionButtonText));
-        }
         private async Task LoadPeopleAsync()
         {
             var people = await _unitOfWork.People.GetAllAsync();
