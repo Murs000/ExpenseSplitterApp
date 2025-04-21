@@ -4,13 +4,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using ExpenseSplitterApp.Services;
 
 namespace ExpenseSplitterApp.ViewModels
 {
-    public class PersonViewModel : INotifyPropertyChanged
+    public class PersonViewModel : BaseViewModel
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ServiceUnitOfWork _service;
 
+        #region ModelsForView
         public ObservableCollection<PersonModel> People { get; set; } = new();
 
         private PersonModel _selectedPerson = new();
@@ -23,6 +25,7 @@ namespace ExpenseSplitterApp.ViewModels
                 OnPropertyChanged(nameof(SelectedPerson));
             }
         }
+        #endregion
 
         #region Bindable Properties
         private bool _isEditVisible;
@@ -50,22 +53,23 @@ namespace ExpenseSplitterApp.ViewModels
         public ICommand CancelCommand { get; }
         #endregion
 
-        public PersonViewModel(IUnitOfWork unitOfWork)
+        public PersonViewModel(ServiceUnitOfWork service)
         {
-            _unitOfWork = unitOfWork;
+            _service = service;
 
             ActionCommand = new Command(async () => await OnActionAsync());
-            ShowAddEntryCommand = new Command(() => ShowAddEntry());
+            ShowAddEntryCommand = new Command(ShowAddEntry);
             EditCommand = new Command<PersonModel>(OnEdit);
             CancelCommand = new Command(OnCancel);
             DeleteCommand = new Command<PersonModel>(async (person) => await OnDeleteAsync(person));
 
             _ = LoadPeopleAsync();
         }
+
         #region Private Methods
         private async Task LoadPeopleAsync()
         {
-            var people = await _unitOfWork.People.GetAllAsync();
+            var people = await _service.Person.GetAllAsync();
             People.Clear();
             foreach (var person in people)
                 People.Add(person);
@@ -94,16 +98,13 @@ namespace ExpenseSplitterApp.ViewModels
             if (SelectedPerson.Id == 0)
             {
                 var newPerson = new PersonModel { Name = SelectedPerson.Name };
-                await _unitOfWork.People.AddAsync(newPerson);
+                await _service.Person.AddAsync(newPerson);
             }
             else
             {
-                var trackedPerson = await _unitOfWork.People.GetByIdAsync(SelectedPerson.Id);
-                trackedPerson.Name = SelectedPerson.Name;
-                _unitOfWork.People.Update(trackedPerson);
+                await _service.Person.UpdateAsync(SelectedPerson);
             }
 
-            await _unitOfWork.SaveAsync();
             await LoadPeopleAsync();
 
             IsEditVisible = false;
@@ -114,13 +115,11 @@ namespace ExpenseSplitterApp.ViewModels
 
         private async Task OnDeleteAsync(PersonModel person)
         {
-            var trackedPerson = await _unitOfWork.People.GetByIdAsync(person.Id);
             var confirm = await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure to delete {person.Name}?", "Yes", "No");
             if (!confirm) return;
 
 
-            _unitOfWork.People.Remove(trackedPerson);
-            await _unitOfWork.SaveAsync();
+            await _service.Person.DeleteAsync(person);
             People.Remove(person);
         }
 
@@ -132,8 +131,5 @@ namespace ExpenseSplitterApp.ViewModels
         }
         #endregion
         
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string name) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

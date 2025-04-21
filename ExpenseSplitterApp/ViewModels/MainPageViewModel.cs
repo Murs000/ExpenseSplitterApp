@@ -8,9 +8,10 @@ using System.Windows.Input;
 
 namespace ExpenseSplitterApp.ViewModels
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel : BaseViewModel
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ServiceUnitOfWork _service;
+        #region ModelsForView
         public ObservableCollection<PersonModel> People { get; set; } = new();
         public ObservableCollection<ExpenceModel> Expences { get; set; } = new();
 
@@ -25,7 +26,8 @@ namespace ExpenseSplitterApp.ViewModels
                 OnPropertyChanged(nameof(SelectedExpence));
             }
         }
-
+        #endregion
+        #region Bindable Properties
         private List<Loan> _result = [];
         public List<Loan> Result
         {
@@ -52,10 +54,10 @@ namespace ExpenseSplitterApp.ViewModels
             get => _isPlusVisible;
             set { _isPlusVisible = value; OnPropertyChanged(nameof(IsPlusVisible)); }
         }
-
+        
         public string ActionButtonText => SelectedExpence?.Id == 0 ? "Add" : "Update";
-
-        // Commands
+        #endregion
+        #region Commands
         public ICommand AddExpenseCommand { get; }
         public ICommand ActionCommand { get; }
         public ICommand CalculateCommand { get; }
@@ -64,11 +66,10 @@ namespace ExpenseSplitterApp.ViewModels
         public ICommand ShowEntryCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
-
-        public MainPageViewModel(IUnitOfWork unitOfWork)
+        #endregion
+        public MainPageViewModel(ServiceUnitOfWork service)
         {
-            _unitOfWork = unitOfWork;
-            // Example people for testing
+            _service = service;
 
             ActionCommand = new Command(async () => await OnActionAsync());
             CalculateCommand = new Command(async () => await OnCalculateAsync());
@@ -81,10 +82,10 @@ namespace ExpenseSplitterApp.ViewModels
             _ = LoadExpencesAsync();
             _ = LoadPeopleAsync();
         }
+        #region PrivateMethods
         private async Task OnCalculateAsync()
         {
-            var calculator = new SplitCalculatorService(_unitOfWork);
-            Result = await calculator.CalculateAsync();
+            Result = await _service.SplitCalculatorService.CalculateAsync();
 
             IsPlusVisible = false;
             IsResultVisible = true;
@@ -117,7 +118,7 @@ namespace ExpenseSplitterApp.ViewModels
 
         private async Task LoadExpencesAsync()
         {
-            var expenses = await _unitOfWork.Expenses.GetAllAsync("Person");
+            var expenses = await _service.Expense.GetAllAsync();
             Expences.Clear();
             foreach (var expence in expenses)
                 Expences.Add(expence);
@@ -125,7 +126,7 @@ namespace ExpenseSplitterApp.ViewModels
 
         private async Task LoadPeopleAsync()
         {
-            var people = await _unitOfWork.People.GetAllAsync();
+            var people = await _service.Person.GetAllAsync();
             People.Clear();
             foreach (var person in people)
                 People.Add(person);
@@ -140,26 +141,13 @@ namespace ExpenseSplitterApp.ViewModels
 
             if (SelectedExpence.Id == 0)
             {
-                var newExpence = new ExpenceModel 
-                { 
-                    Description = SelectedExpence.Description,
-                    ExpenceAmount = SelectedExpence.ExpenceAmount,
-                    PersonId = SelectedExpence.Person.Id
-                };
-                await _unitOfWork.Expenses.AddAsync(newExpence);
+                await _service.Expense.AddAsync(SelectedExpence);
             }
             else
             {
-                var trackedExpence = await _unitOfWork.Expenses.GetByIdAsync(SelectedExpence.Id);
-
-                trackedExpence.Description = SelectedExpence.Description;
-                trackedExpence.ExpenceAmount = SelectedExpence.ExpenceAmount;
-                trackedExpence.PersonId = SelectedExpence.PersonId;
-
-                _unitOfWork.Expenses.Update(trackedExpence);
+                await _service.Expense.UpdateAsync(SelectedExpence);
             }
 
-            await _unitOfWork.SaveAsync();
             await LoadExpencesAsync();
             await LoadPeopleAsync();
 
@@ -170,16 +158,12 @@ namespace ExpenseSplitterApp.ViewModels
         }
         private async Task OnDeleteAsync(ExpenceModel expence)
         {
-            var trackedExpence = await _unitOfWork.Expenses.GetByIdAsync(expence.Id);
             var confirm = await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure to delete {expence.Person.Name} => {expence.Description}?", "Yes", "No");
             if (!confirm) return;
 
-
-            _unitOfWork.Expenses.Remove(trackedExpence);
-            await _unitOfWork.SaveAsync();
+            _service.Expense.DeleteAsync(expence);
             Expences.Remove(expence);
         }
-
         private void OnResultCancel()
         {
             IsResultVisible = false;
@@ -192,10 +176,6 @@ namespace ExpenseSplitterApp.ViewModels
             IsPlusVisible = true;
             SelectedExpence = new ExpenceModel();
         }
-
-        // Property Changed Helpers
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        #endregion
     }
 }

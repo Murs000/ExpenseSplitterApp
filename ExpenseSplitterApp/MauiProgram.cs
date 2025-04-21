@@ -1,6 +1,7 @@
 ﻿using ExpenseSplitterApp.DataAccess;
 using ExpenseSplitterApp.DataAccess.Implementations;
 using ExpenseSplitterApp.DataAccess.Interfaces;
+using ExpenseSplitterApp.Services;
 using ExpenseSplitterApp.ViewModels;
 using ExpenseSplitterApp.Views;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace ExpenseSplitterApp
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            builder.Services.AddScoped<ServiceUnitOfWork>();
+
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<PersonViewModel>();
 
@@ -48,3 +51,11 @@ namespace ExpenseSplitterApp
         }
     }
 }
+/*
+ *TO DO:   
+ *      1 separate services +
+ *      2 beatufy xaml code
+ *      3 add states for not same time editing and deleting
+ *      4 load again when come back from nav page
+ *      5 make style to dark mode responsible
+ */
