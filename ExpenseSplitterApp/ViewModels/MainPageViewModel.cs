@@ -1,4 +1,5 @@
 ﻿using ExpenseSplitterApp.DataAccess.Interfaces;
+using ExpenseSplitterApp.Enums;
 using ExpenseSplitterApp.Models;
 using ExpenseSplitterApp.Services;
 using System.Collections.ObjectModel;
@@ -34,27 +35,20 @@ namespace ExpenseSplitterApp.ViewModels
             get => _result;
             set { _result = value; OnPropertyChanged(nameof(Result)); }
         }
-
-        private bool _isResultVisible = false;
-        public bool IsResultVisible
-        {
-            get => _isResultVisible;
-            set { _isResultVisible = value; OnPropertyChanged(nameof(IsResultVisible)); }
-        }
-
-        private bool _isEntryVisible = false;
-        public bool IsEntryVisible
-        {
-            get => _isEntryVisible;
-            set { _isEntryVisible = value; OnPropertyChanged(nameof(IsEntryVisible)); }
-        }
-        private bool _isPlusVisible = true;
-        public bool IsPlusVisible
-        {
-            get => _isPlusVisible;
-            set { _isPlusVisible = value; OnPropertyChanged(nameof(IsPlusVisible)); }
-        }
         
+        private AppState _state = AppState.Observe;
+        public AppState State
+        {
+            get => _state;
+            set
+            {
+                if (_state != value)
+                {
+                    _state = value;
+                    OnPropertyChanged(nameof(State));
+                }
+            }
+        }
         public string ActionButtonText => SelectedExpence?.Id == 0 ? "Add" : "Update";
         #endregion
         #region Commands
@@ -91,9 +85,7 @@ namespace ExpenseSplitterApp.ViewModels
         {
             Result = await _service.SplitCalculatorService.CalculateAsync();
 
-            IsPlusVisible = false;
-            IsResultVisible = true;
-            IsEntryVisible = false;
+            State = AppState.Result;
         }
         private void OnEdit(ExpenceModel expence)
         {
@@ -107,15 +99,12 @@ namespace ExpenseSplitterApp.ViewModels
                 ExpenceAmount = expence.ExpenceAmount,
                 Person =  matchedPerson
             };
-            IsEntryVisible = true;
-            IsPlusVisible = false;
+            State = AppState.Action;
             OnPropertyChanged(nameof(ActionButtonText));
         }
         private void OnShowEntry()
         {
-            IsPlusVisible = false;
-            IsEntryVisible = true;
-            IsResultVisible = false;
+            State = AppState.Action;
 
             _ = LoadPeopleAsync();
         }
@@ -156,8 +145,7 @@ namespace ExpenseSplitterApp.ViewModels
             await LoadPeopleAsync();
 
             SelectedExpence = new ExpenceModel();
-            IsEntryVisible = false;
-            IsPlusVisible = true;
+            State = AppState.Observe;
             OnPropertyChanged(nameof(ActionButtonText));
         }
         private async Task OnDeleteAsync(ExpenceModel expence)
@@ -170,14 +158,12 @@ namespace ExpenseSplitterApp.ViewModels
         }
         private void OnResultCancel()
         {
-            IsResultVisible = false;
-            IsPlusVisible = true;
+            State = AppState.Observe;
             Result = [];
         }
         private void OnActionCancel()
         {
-            IsEntryVisible = false;
-            IsPlusVisible = true;
+            State = AppState.Observe;
             SelectedExpence = new ExpenceModel();
         }
         #endregion

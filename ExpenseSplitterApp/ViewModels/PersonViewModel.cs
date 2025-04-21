@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using ExpenseSplitterApp.Services;
+using ExpenseSplitterApp.Enums;
 
 namespace ExpenseSplitterApp.ViewModels
 {
@@ -28,18 +29,19 @@ namespace ExpenseSplitterApp.ViewModels
         #endregion
 
         #region Bindable Properties
-        private bool _isEditVisible;
-        public bool IsEditVisible
-        {
-            get => _isEditVisible;
-            set { _isEditVisible = value; OnPropertyChanged(nameof(IsEditVisible)); }
-        }
 
-        private bool _isPlusVisible = true;
-        public bool IsPlusVisible
+        private AppState _state = AppState.Observe;
+        public AppState State
         {
-            get => _isPlusVisible;
-            set { _isPlusVisible = value; OnPropertyChanged(nameof(IsPlusVisible)); }
+            get => _state;
+            set
+            {
+                if (_state != value)
+                {
+                    _state = value;
+                    OnPropertyChanged(nameof(State));
+                }
+            }
         }
 
         public string ActionButtonText => SelectedPerson?.Id == 0 ? "Add" : "Update";
@@ -78,16 +80,14 @@ namespace ExpenseSplitterApp.ViewModels
         private void ShowAddEntry()
         {
             SelectedPerson = new PersonModel();
-            IsEditVisible = true;
-            IsPlusVisible = false;
+            State = AppState.Action;
             OnPropertyChanged(nameof(ActionButtonText));
         }
 
         private void OnEdit(PersonModel person)
         {
             SelectedPerson = new PersonModel { Id = person.Id, Name = person.Name };
-            IsEditVisible = true;
-            IsPlusVisible = false;
+            State = AppState.Action;
             OnPropertyChanged(nameof(ActionButtonText));
         }
 
@@ -107,8 +107,7 @@ namespace ExpenseSplitterApp.ViewModels
 
             await LoadPeopleAsync();
 
-            IsEditVisible = false;
-            IsPlusVisible = true;
+            State = AppState.Observe;
             SelectedPerson = new PersonModel();
             OnPropertyChanged(nameof(ActionButtonText));
         }
@@ -126,8 +125,7 @@ namespace ExpenseSplitterApp.ViewModels
         private void OnCancel()
         {
             SelectedPerson = new PersonModel(); // Clear entry
-            IsEditVisible = false;
-            IsPlusVisible = true;
+            State = AppState.Observe;
         }
         #endregion
         

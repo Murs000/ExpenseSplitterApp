@@ -55,7 +55,7 @@ namespace ExpenseSplitterApp
  *TO DO:   
  *      1 separate services +
  *      2 beatufy xaml code
- *      3 add states for not same time editing and deleting
- *      4 load again when come back from nav page
+ *      3 add states for not same time editing and deleting +
+ *      4 load again when come back from nav page +
  *      5 make style to dark mode responsible
  */

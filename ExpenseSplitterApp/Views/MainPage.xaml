@@ -11,6 +11,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <hlp:BooleanToStringConverter x:Key="BooleanToStringConverter"/>
+            <hlp:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -48,7 +49,10 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:ExpenceModel">
-                            <SwipeView>
+                            <SwipeView IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}">
                                 <SwipeView.RightItems>
                                     <SwipeItems>
                                         <SwipeItemView>
@@ -116,25 +120,36 @@
                VerticalTextAlignment="Center"
                HorizontalOptions="End"
                                                Margin="0,0,20,0"/>
-                                        <Button Text="Edit"
-        CornerRadius="0"
-        Grid.Column="3"
-        IsVisible="{x:OnPlatform WinUI=True, Default=False}"
-        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
-        CommandParameter="{Binding .}"
-        BackgroundColor="#4682B4"
-        TextColor="White"
-        WidthRequest="80"/>
-                                        <Button Text="Delete"
-        CornerRadius="0"
-        Grid.Column="4"
-        IsVisible="{x:OnPlatform WinUI=True, Default=False}"
-        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
-        CommandParameter="{Binding .}"
-        BackgroundColor="Crimson"
-        TextColor="White"
-        WidthRequest="80"
-        Margin="1,0,0,0"/>
+                                        <Grid Grid.Column="3"
+                                              IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Text="Edit"
+CornerRadius="0"
+Grid.Column="0"
+IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
+CommandParameter="{Binding .}"
+BackgroundColor="#4682B4"
+TextColor="White"
+WidthRequest="80"/>
+                                            <Button Text="Delete"
+CornerRadius="0"
+Grid.Column="1"
+IsVisible="{x:OnPlatform WinUI=True, Default=False}"
+Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
+CommandParameter="{Binding .}"
+BackgroundColor="Crimson"
+TextColor="White"
+WidthRequest="80"
+Margin="1,0,0,0"/>
+                                        </Grid>
+                                        
                                     </Grid>
                                 </Border>
                             </SwipeView>
@@ -145,10 +160,13 @@
         </ScrollView>
 
         <!-- Floating Action Button -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2"
+              IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                  Path=State, 
+                  Converter={StaticResource EnumToBoolConverter}, 
+                  ConverterParameter=Observe}">
             <HorizontalStackLayout HorizontalOptions="End">
                 <Button Text="+"
-                        IsVisible="{Binding IsPlusVisible}"
                         FontSize="28"
                         WidthRequest="60"
                         HeightRequest="60"
@@ -163,7 +181,10 @@
         </Grid>
 
         <!-- Expense Entry -->
-        <VerticalStackLayout Spacing="10" Grid.Row="2" IsVisible="{Binding IsEntryVisible}">
+        <VerticalStackLayout Spacing="10" Grid.Row="2" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                  Path=State, 
+                  Converter={StaticResource EnumToBoolConverter}, 
+                  ConverterParameter=Action}">
             <Label Text="Add Expense" FontAttributes="Bold" FontSize="18"/>
             <Entry Placeholder="Description" Text="{Binding SelectedExpence.Description}" />
             <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding SelectedExpence.ExpenceAmount}" />
@@ -198,7 +219,10 @@
         
         <!-- Result View -->
         <Grid Grid.Row="2"
-              IsVisible="{Binding IsResultVisible}">
+              IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                  Path=State, 
+                  Converter={StaticResource EnumToBoolConverter}, 
+                  ConverterParameter=Result}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>

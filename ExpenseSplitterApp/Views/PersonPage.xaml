@@ -5,9 +5,15 @@
              xmlns:m="clr-namespace:ExpenseSplitterApp.Models"
              x:Class="ExpenseSplitterApp.Views.PersonPage"
              x:DataType="vm:PersonViewModel"
+             xmlns:hlp="clr-namespace:ExpenseSplitterApp.Helpers"
              Title="Persons"
              BackgroundColor="#F5F5F5">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <hlp:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -26,7 +32,10 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:PersonModel">
-                            <SwipeView>
+                            <SwipeView IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}">
                                 <SwipeView.RightItems>
                                     <SwipeItems>
                                         <SwipeItemView>
@@ -68,21 +77,29 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Grid.Column="0" Text="{Binding Name}" FontSize="16" TextColor="#333" Margin="10" />
-                                        <Button Text="Edit"
+                                        <Grid Grid.Column="1"
+                                              IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Text="Edit"
                                                 CornerRadius="0"
-                                                Grid.Column="1"
+                                                Grid.Column="0"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=EditCommand}"
                                                 CommandParameter="{Binding .}"
                                                 BackgroundColor="#4682B4"
                                                 TextColor="White"
                                                 WidthRequest="80"/>
-                                        <Button Text="Delete"
+                                            <Button Text="Delete"
                                                 CornerRadius="0"
-                                                Grid.Column="2"
+                                                Grid.Column="1"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
                                                 CommandParameter="{Binding .}"
@@ -90,6 +107,7 @@
                                                 TextColor="White"
                                                 WidthRequest="80"
                                                 Margin="1,0,0,0"/>
+                                        </Grid>
                                     </Grid>
                                 </Border>
                             </SwipeView>
@@ -101,7 +119,10 @@
 
         <!-- Bottom Entry & Buttons -->
         <StackLayout Grid.Row="1" Padding="0,10,0,0"
-                     IsVisible="{Binding IsEditVisible}">
+                     IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Action}">
             <Entry Placeholder="Enter name..."
                    Text="{Binding SelectedPerson.Name}"
                    FontSize="16"
@@ -143,7 +164,10 @@
                 VerticalOptions="End"
                 Margin="0,0,10,10"
                 Command="{Binding ShowAddEntryCommand}"
-                IsVisible="{Binding IsPlusVisible}"
+                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, 
+                                                                Path=State, 
+                                                                Converter={StaticResource EnumToBoolConverter}, 
+                                                                ConverterParameter=Observe}"
                 Grid.Row="0" />
     </Grid>
 </ContentPage>
