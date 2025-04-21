@@ -79,6 +79,10 @@ namespace ExpenseSplitterApp.ViewModels
             EditCommand = new Command<ExpenceModel>(OnEdit);
             DeleteCommand = new Command<ExpenceModel>(async (expense) => await OnDeleteAsync(expense));
 
+            LoadData();
+        }
+        public void LoadData()
+        {
             _ = LoadExpencesAsync();
             _ = LoadPeopleAsync();
         }

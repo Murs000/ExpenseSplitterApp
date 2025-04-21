@@ -16,5 +16,11 @@ namespace ExpenseSplitterApp
         {
             await Shell.Current.GoToAsync(nameof(Views.PersonPage));
         }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            _viewModel.LoadData();
+        }
     }
 }
