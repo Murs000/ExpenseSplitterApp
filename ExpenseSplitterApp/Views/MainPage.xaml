@@ -63,7 +63,7 @@
                                         <SwipeItemView>
                                             <Border StrokeShape="RoundRectangle 0,12,0,12">
                                                 <Button Text="Delete"
-                                                        BackgroundColor="Crimson"
+                                                        BackgroundColor="#D32F2F"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
                                                         CommandParameter="{Binding .}"
                                                         CornerRadius="0"/>
@@ -140,7 +140,7 @@
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
                                                 CommandParameter="{Binding .}"
-                                                BackgroundColor="Crimson"
+                                                BackgroundColor="#D32F2F"
                                                 WidthRequest="80"
                                                 Margin="1,0,0,0"/>
                                         </Grid>
@@ -201,8 +201,7 @@
                         Margin="2"
                         Text="Cancel"
                         Command="{Binding ActionCancelCommand}"
-                        BackgroundColor="LightGray"
-                        TextColor="Black"
+                        BackgroundColor="#666666"
                         HorizontalOptions="FillAndExpand" />
             </Grid>
         </VerticalStackLayout>
@@ -251,7 +250,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Grid.Column="1" Background="LightGray" HorizontalOptions="End" Text="Cancel" TextColor="Black" Margin="4" Command="{Binding ResultCancelCommand}"/>
+            <Button Grid.Column="1" Background="#666666" HorizontalOptions="End" Text="Cancel" Margin="4" Command="{Binding ResultCancelCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>

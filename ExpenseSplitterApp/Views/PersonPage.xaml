@@ -40,7 +40,7 @@
                                         <SwipeItemView>
                                             <Border StrokeShape="RoundRectangle 0,12,0,12">
                                                 <Button Text="Delete"
-                                                   BackgroundColor="Crimson"
+                                                   BackgroundColor="#D32F2F"
                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
                                                    CommandParameter="{Binding .}"
                                                         CornerRadius="0"/>
@@ -98,7 +98,7 @@
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PersonViewModel}}, Path=DeleteCommand}"
                                                 CommandParameter="{Binding .}"
-                                                BackgroundColor="Crimson"
+                                                BackgroundColor="#D32F2F"
                                                 WidthRequest="80"
                                                 Margin="1,0,0,0"/>
                                         </Grid>
@@ -136,8 +136,7 @@
                         Margin="2"
                     Text="Cancel"
                 Command="{Binding CancelCommand}"
-                BackgroundColor="LightGray"
-                TextColor="Black"
+                BackgroundColor="#666666"
                 HorizontalOptions="FillAndExpand" />
             </Grid>
         </StackLayout>
