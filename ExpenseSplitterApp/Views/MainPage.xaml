@@ -105,7 +105,7 @@
                                             VerticalTextAlignment="Center" 
                                             Margin="10"/>
                                     <Label  Grid.Column="1"
-                                            Text="{Binding ExpenceAmount, StringFormat='₼{0:F2}'}"
+                                            Text="{Binding ExpenceAmount, StringFormat='{0:C}'}"
                                             FontSize="16"
                                             TextColor="#2E8B57"
                                             VerticalTextAlignment="Center"
