@@ -37,6 +37,7 @@
         </Grid.RowDefinitions>
 
         <Label  Text="Expenses"
+                Style="{StaticResource Headline}"
                 FontSize="24"
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
@@ -107,7 +108,7 @@
                                     <Label  Grid.Column="1"
                                             Text="{Binding ExpenceAmount, StringFormat='{0:C}'}"
                                             FontSize="16"
-                                            TextColor="#2E8B57"
+                                            TextColor="#66BB6A"
                                             VerticalTextAlignment="Center"
                                             HorizontalOptions="End"
                                             Margin="10,0" />
@@ -174,12 +175,14 @@
 
         <!-- Expense Entry -->
         <VerticalStackLayout    Spacing="10" 
+                                Padding="5"
                                 Grid.Row="2" 
                                 IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
                                 Path=State, 
                                 Converter={StaticResource EnumToBoolConverter}, 
-                                ConverterParameter=Action}">
-            <Label Text="Add Expense" FontAttributes="Bold" FontSize="18"/>
+                                ConverterParameter=Action}"
+                                Margin="0">
+            <Label Text="Add Expense" FontAttributes="Bold" FontSize="18" Style="{StaticResource ClassicLabel}"/>
             <Entry Placeholder="Description" Text="{Binding SelectedExpence.Description}" />
             <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding SelectedExpence.ExpenceAmount}" />
             <Picker Title="Select Person" 
@@ -242,9 +245,9 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Display Loan details -->
-                                <Label Grid.Column="0" Text="{Binding PersonName}" FontSize="16" VerticalTextAlignment="Center"/>
-                                <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" VerticalTextAlignment="Center"/>
-                                <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="0" Text="{Binding PersonName}" FontSize="16" VerticalTextAlignment="Center" Style="{StaticResource ClassicLabel}"/>
+                                <Label Grid.Column="1" Text="{Binding IsRecive, Converter={StaticResource BooleanToStringConverter}}" FontSize="16" VerticalTextAlignment="Center" Style="{StaticResource ClassicLabel}"/>
+                                <Label Grid.Column="2" Text="{Binding MoneyAmount, StringFormat='{0:C}'}" FontSize="16" VerticalTextAlignment="Center" Style="{StaticResource ClassicLabel}"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>
