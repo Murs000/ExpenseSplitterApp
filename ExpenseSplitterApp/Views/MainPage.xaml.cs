@@ -1,5 +1,6 @@
 ﻿using ExpenseSplitterApp.ViewModels;
 using ExpenseSplitterApp.Views;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace ExpenseSplitterApp
 {

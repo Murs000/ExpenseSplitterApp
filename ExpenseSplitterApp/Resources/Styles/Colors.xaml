@@ -26,6 +26,17 @@
     <Color x:Key="TertiaryDark">#497d7e</Color>
     <!-- Darker tertiary shade -->
 
+    
+    <!-- Green -->
+    <Color x:Key="EditButtonColor">#28a745</Color>
+    <!-- Darker Green -->
+    <Color x:Key="EditButtonDarkColor">#218838</Color>
+    <!-- Red -->
+    <Color x:Key="DeleteButtonColor">#dc3545</Color>
+    <!-- Darker Red -->
+    <Color x:Key="DeleteButtonDarkColor">#c82333</Color>
+    
+
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
 

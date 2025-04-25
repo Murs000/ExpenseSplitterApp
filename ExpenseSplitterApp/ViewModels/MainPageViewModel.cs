@@ -2,6 +2,7 @@
 using ExpenseSplitterApp.Enums;
 using ExpenseSplitterApp.Models;
 using ExpenseSplitterApp.Services;
+using Microsoft.Maui.Controls.Shapes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -29,6 +30,7 @@ namespace ExpenseSplitterApp.ViewModels
         }
         #endregion
         #region Bindable Properties
+
         private List<Loan> _result = [];
         public List<Loan> Result
         {

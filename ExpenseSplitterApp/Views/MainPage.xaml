@@ -55,44 +55,42 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="m:ExpenceModel">
-                            <SwipeView IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
+                            <SwipeView  IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
                                                                 Path=State, 
                                                                 Converter={StaticResource EnumToBoolConverter}, 
-                                                                ConverterParameter=Observe}">
+                                                                 ConverterParameter=Observe}">
                                 <SwipeView.RightItems>
                                     <SwipeItems>
                                         <SwipeItemView>
                                             <Border StrokeShape="RoundRectangle 0,12,0,12">
-                                                <Button Text="Delete"
-                                                        BackgroundColor="#D32F2F"
+                                                <Button Style="{StaticResource DeleteButton}"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
-                                                        CommandParameter="{Binding .}"
-                                                        CornerRadius="0"/>
+                                                        CommandParameter="{Binding .}"/>
                                             </Border>
                                         </SwipeItemView>
                                         <SwipeItemView>
                                             <Border>
-                                                <Button Text="Edit"
+                                                <Button Style="{StaticResource EditButton}"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=EditCommand}"
-                                                        CommandParameter="{Binding .}"
-                                                        CornerRadius="0"/>
+                                                        CommandParameter="{Binding .}"/>
                                             </Border>
                                         </SwipeItemView>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
-                            <Border StrokeThickness="1"
+                                <Border x:Name="ExpenseItemBorder"
+                                        StrokeThickness="1"
                                     Margin="2">
-                                <Border.StrokeShape>
-                                    <RoundRectangle>
-                                        <RoundRectangle.CornerRadius>
-                                            <OnPlatform x:TypeArguments="CornerRadius">
-                                                <On Platform="WinUI" Value="12"/>
-                                                <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
-                                            </OnPlatform>
-                                        </RoundRectangle.CornerRadius>
-                                    </RoundRectangle>
-                                </Border.StrokeShape>
-                                <Grid>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle>
+                                            <RoundRectangle.CornerRadius>
+                                                <OnPlatform x:TypeArguments="CornerRadius">
+                                                    <On Platform="WinUI" Value="12"/>
+                                                    <On Platform="iOS, Android, MacCatalyst" Value="12,0,12,0"/>
+                                                </OnPlatform>
+                                            </RoundRectangle.CornerRadius>
+                                        </RoundRectangle>
+                                    </Border.StrokeShape>
+                                    <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -127,21 +125,18 @@
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Text="Edit"
-                                                CornerRadius="0"
+                                            <Button Style="{StaticResource EditButton}"
                                                 Grid.Column="0"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, 
                                                 Path=EditCommand}"
                                                 CommandParameter="{Binding .}"
                                                 WidthRequest="80"/>
-                                        <Button Text="Delete"
-                                                CornerRadius="0"
+                                            <Button Style="{StaticResource DeleteButton}"
                                                 Grid.Column="1"
                                                 IsVisible="{x:OnPlatform WinUI=True, Default=False}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteCommand}"
                                                 CommandParameter="{Binding .}"
-                                                BackgroundColor="#D32F2F"
                                                 WidthRequest="80"
                                                 Margin="1,0,0,0"/>
                                         </Grid>

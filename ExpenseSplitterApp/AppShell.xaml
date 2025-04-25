@@ -19,18 +19,47 @@
             <Label Text="My App" FontSize="20" TextColor="White"/>
         </StackLayout>
     </Shell.FlyoutHeader>
-    <Shell.FlyoutFooter BackgroundColor ="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
-        <!-- Theme Toggle Row -->
-        <Grid Padding="10" BackgroundColor ="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+    <Shell.FlyoutFooter>
+        <Grid Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label  Grid.Column="0" Text="Dark Theme" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Switch Grid.Column="1" Toggled="OnThemeSwitchToggled" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label  Grid.Column="2" Text="Light Theme" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+            <RadioButton x:Name="DarkRadio"
+             Grid.Column="0"
+             Content="Dark"
+             GroupName="Theme"
+             Value="Dark"
+             CheckedChanged="OnThemeRadioCheckedChanged"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+             TextColor="{StaticResource White}"/>
+
+            <RadioButton x:Name="LightRadio"
+             Grid.Column="1"
+             Content="Light"
+             GroupName="Theme"
+             Value="Light"
+             CheckedChanged="OnThemeRadioCheckedChanged"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+             TextColor="{StaticResource White}"/>
+
+            <RadioButton x:Name="DefaultRadio"
+             Grid.Column="2"
+             Content="Default"
+             GroupName="Theme"
+             Value="Default"
+             CheckedChanged="OnThemeRadioCheckedChanged"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+             TextColor="{StaticResource White}"/>
         </Grid>
     </Shell.FlyoutFooter>
-    
+
 </Shell>

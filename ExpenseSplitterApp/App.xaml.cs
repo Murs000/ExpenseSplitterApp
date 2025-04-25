@@ -6,10 +6,14 @@
         {
             InitializeComponent();
 
-            var savedTheme = Preferences.Get("AppTheme", "Unspecified");
-            Application.Current.UserAppTheme = Enum.TryParse(savedTheme, out AppTheme theme)
-                ? theme
-                : AppTheme.Light;
+            string savedTheme = Preferences.Get("AppTheme", "Default");
+
+            Application.Current.UserAppTheme = savedTheme switch
+            {
+                "Dark" => AppTheme.Dark,
+                "Light" => AppTheme.Light,
+                _ => AppTheme.Unspecified
+            };
 
             MainPage = new AppShell();
         }

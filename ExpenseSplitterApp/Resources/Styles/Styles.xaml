@@ -50,6 +50,18 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Button" x:Key="DeleteButton">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource DeleteButtonColor}, Dark={StaticResource DeleteButtonDarkColor}}" />
+        <Setter Property="Text" Value="Delete"/>
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="EditButton">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource EditButtonColor}, Dark={StaticResource EditButtonDarkColor}}" />
+        <Setter Property="Text" Value="Edit"/>
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+
     <Style TargetType="CheckBox">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
